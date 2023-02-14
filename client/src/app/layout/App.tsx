@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import { Product } from '../models/product';
 import Catalog from '../../features/catalog/Catalog';
+import { Typography } from '@mui/material';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -14,7 +15,7 @@ function App() {
         price: (prevState.length + 1) * 100,
         brand: 'some brand',
         description: 'some description',
-        pictureUrl: 'http://picsum.photos/200'
+        pictureUrl: `http://picsum.photos/${200 + prevState.length}`
       }
     ])
   }
@@ -31,10 +32,10 @@ function App() {
   }, []); // Or [] if effect doesn't need props or state
   
   return (
-    <div className='app'>
-      <h1>eCommerce Store</h1>
+    <>
+      <Typography variant='h1'>eCommerce Store</Typography>
       <Catalog products={products} addProduct={addProduct}/>
-    </div>
+    </>
   );
 }
 
