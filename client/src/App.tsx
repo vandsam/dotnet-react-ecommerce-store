@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [products, setProducts] = useState([
+    {name: 'product1', price: 100.00},
+    {name: 'product2', price: 200.00},
+  ]);
+
+  function addProduct() {
+    setProducts(prevState => [...prevState, {name: "product" + (prevState.length + 1), price: (prevState.length + 1) * 100 }])
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      const response = await fetch('http://localhost:5264/api/products');
+      const data = await response.json();
+      setProducts(data)
+      // ...
+    }
+    fetchData();
+  }, []); // Or [] if effect doesn't need props or state
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app'>
+      <h1>eCommerce Store</h1>
+      <ul>
+        {products.map((product, index) => (
+          <li key={index}>{product.name} - {product.price}</li>
+        ))}
+      </ul>
+      <button onClick={addProduct}>Add Product</button>
     </div>
   );
 }
