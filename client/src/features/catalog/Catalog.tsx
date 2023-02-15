@@ -1,19 +1,22 @@
 import { Product } from "../../app/models/product";
-import { Button } from "@mui/material";
 import ProductList from "./ProductList";
+import { useState, useEffect } from "react";
 
-interface Props {
-  products: Product[];
-  addProduct: () => void;
-}
+export default function Catalog() {
+  const [products, setProducts] = useState<Product[]>([]);
 
-export default function Catalog({ products, addProduct }: Props) {
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://localhost:5264/api/products");
+      const data = await response.json();
+      setProducts(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <ProductList products={products} />
-      <Button variant="contained" onClick={addProduct}>
-        Add Product
-      </Button>
     </>
   );
 }
