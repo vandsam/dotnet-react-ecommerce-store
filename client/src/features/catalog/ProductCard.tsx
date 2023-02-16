@@ -8,16 +8,12 @@ import {
   CardHeader,
   Avatar,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Product } from "../../app/models/product";
 
 interface Props {
   product: Product;
 }
-
-let USDollar = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
 
 export default function ProductCard({ product }: Props) {
   return (
@@ -44,7 +40,7 @@ export default function ProductCard({ product }: Props) {
       />
       <CardContent>
         <Typography gutterBottom color="secondary" variant="h5">
-          {USDollar.format(product.price / 100)}
+          ${(product.price / 100).toFixed(2)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           <strong>{product.brand}</strong> /{" "}
@@ -53,7 +49,9 @@ export default function ProductCard({ product }: Props) {
       </CardContent>
       <CardActions>
         <Button size="small">Add to Cart</Button>
-        <Button size="small">View</Button>
+        <Button component={Link} to={`/catalog/${product.id}`} size="small">
+          View
+        </Button>
       </CardActions>
     </Card>
   );
