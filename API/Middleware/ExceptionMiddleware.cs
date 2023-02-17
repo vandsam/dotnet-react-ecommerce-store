@@ -22,6 +22,7 @@ namespace API.Middleware
     }
 
 
+    // Framework needs method 'InvokeAsync' in middleware
     public async Task InvokeAsync(HttpContext context)
     {
       try
@@ -40,6 +41,7 @@ namespace API.Middleware
           Detail = _env.IsDevelopment() ? ex.StackTrace?.ToString() : null,
           Title = ex.Message
         };
+
         var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
         var json = JsonSerializer.Serialize(response, options);

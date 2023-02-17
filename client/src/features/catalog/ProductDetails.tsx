@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableRow,
 } from "@mui/material";
+import agent from "../../app/api/agent";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -19,21 +20,18 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProductDetails = async (id: string | undefined) => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5264/api/products/${id}`
-        );
+    try {
+      const fetchProductData = async (id: string) => {
+        const response = await agent.Catalog.details(parseInt(id));
+        setProduct(response);
+      };
 
-        setProduct(response.data);
-      } catch (error) {
-        console.error("ERROR", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductDetails(id);
+      id && fetchProductData(id);
+    } catch (error) {
+      console.log("ERROR", error);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
 
   // 1. On initial component render, this function component will return 'Loading...' and below code will not execute
