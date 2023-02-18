@@ -1,7 +1,6 @@
 import { Product } from "../../app/models/product";
 import ProductList from "./ProductList";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import agent from "../../app/api/agent";
 
 export default function Catalog() {

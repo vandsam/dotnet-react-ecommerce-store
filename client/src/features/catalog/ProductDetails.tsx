@@ -1,6 +1,5 @@
 import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "../../app/models/product";
 import {
@@ -20,18 +19,11 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const fetchProductData = async (id: string) => {
-        const response = await agent.Catalog.details(parseInt(id));
-        setProduct(response);
-      };
-
-      id && fetchProductData(id);
-    } catch (error) {
-      console.log("ERROR", error);
-    } finally {
-      setLoading(false);
-    }
+    id &&
+      agent.Catalog.details(parseInt(id))
+        .then((response) => setProduct(response))
+        .catch((error) => console.error("ERROR", error))
+        .finally(() => setLoading(false));
   }, [id]);
 
   // 1. On initial component render, this function component will return 'Loading...' and below code will not execute
