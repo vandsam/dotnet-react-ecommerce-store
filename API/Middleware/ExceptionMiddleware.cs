@@ -8,6 +8,9 @@ using System.Text.Json;
 
 namespace API.Middleware
 {
+  // This middleware catches the API's that specifically throw an Exception. 
+  // The other API's that return "NotFound","BadRequest", etc., do not throw an exception. 
+  // Therefore, they don't trigger the Catch block of the middleware
   public class ExceptionMiddleware
   {
     private readonly RequestDelegate _next;
@@ -31,7 +34,7 @@ namespace API.Middleware
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, ex.Message);
+        _logger.LogError(ex, ex.Message); //This logs in the .NET console what was passed in argument of throw new Exception("Error Message Here")
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = 500;
 

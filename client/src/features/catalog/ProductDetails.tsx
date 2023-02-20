@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "@mui/material";
 import agent from "../../app/api/agent";
+import NotFound from "../../app/errors/NotFound";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>();
@@ -26,12 +28,12 @@ export default function ProductDetails() {
         .finally(() => setLoading(false));
   }, [id]);
 
-  // 1. On initial component render, this function component will return 'Loading...' and below code will not execute
-  if (loading) return <h3>Loading...</h3>;
+  // 1. On initial component render, this function component will return <LoadingComponent> and below code will not execute
+  if (loading) return <LoadingComponent message="Loading product..." />;
 
   // 2. After GET request is finished, component will re-render because the component state updated
-  // #1 will not return as the loading state is updated to false. If product is null, then this 'Product not found' will return
-  if (!product) return <h3>Product not found</h3>;
+  // #1 will not return as the loading state is updated to false. If product is null, then this <NotFound> component will return
+  if (!product) return <NotFound />;
 
   // 3. After GET request is finished, and if we get a product from the DB then this code will return
   return (

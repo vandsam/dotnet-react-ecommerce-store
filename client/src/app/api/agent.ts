@@ -1,15 +1,22 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { router } from "../router/Routes";
+
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = "http://localhost:5264/api/";
 
 const responseBody = (response: AxiosResponse) => response.data;
 
+// Specifying we want to intercept the response from API instead of request by doing axios.interceptors.response instead of axios.interceptors.request
 axios.interceptors.response.use(
-  (response) => {
+  async (response) => {
+    // Any responses with status code in the 200's will be considered OK requests, and just return the response.
+    await sleep();
     return response;
   },
   (error: AxiosError) => {
+    // Other response codes trigger this block
     const { data, status } = error.response as AxiosResponse;
 
     switch (status) {
@@ -32,7 +39,7 @@ axios.interceptors.response.use(
         toast.error(data.title);
         break;
       case 500:
-        toast.error(data.title);
+        router.navigate("/server-error", { state: { error: data } });
         break;
       default:
         break;
