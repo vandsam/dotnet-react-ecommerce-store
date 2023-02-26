@@ -13,15 +13,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import agent from "../../app/api/agent";
 import { Product } from "../../app/models/product";
+import { useAppDispatch } from "../../app/store/configureStore";
 import { currencyFormat } from "../../app/util/util";
-import { useStoreContext } from "../../context/StoreContext";
+import { setBasket } from "../basket/basketSlice";
 
 interface Props {
   product: Product;
 }
 
 export default function ProductCard({ product }: Props) {
-  const { setBasket } = useStoreContext();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +30,7 @@ export default function ProductCard({ product }: Props) {
     setLoading(true);
 
     agent.Basket.addItem(productId)
-      .then((basket) => setBasket(basket))
+      .then((basket) => dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }

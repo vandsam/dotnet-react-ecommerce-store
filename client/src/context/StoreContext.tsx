@@ -37,7 +37,6 @@ export function StoreProvider({ children }: PropsWithChildren<any>) {
 
     const itemIndex = items.findIndex((i) => i.productId === productId);
 
-    console.log(itemIndex);
     if (itemIndex > 0) {
       items[itemIndex].quantity -= quantity;
 
